@@ -1,3 +1,5 @@
+package amazonmovies;
+
 import com.mysql.jdbc.MysqlDataTruncation;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.jsoup.Connection;
@@ -26,7 +28,7 @@ public class Crawler implements Runnable{
     private static PreparedStatement updateStatement;
     private int exceptionCount = 0;
 
-    /*public Crawler(Queue<String> productIds, PreparedStatement insertStatement, PreparedStatement updateStatement) {
+    /*public amazonmovies.Crawler(Queue<String> productIds, PreparedStatement insertStatement, PreparedStatement updateStatement) {
     }*/
 
     public Crawler() {}
@@ -121,16 +123,36 @@ public class Crawler implements Runnable{
                         .execute();
                 doc = response.parse();
                 if (String.valueOf(doc).contains("aiv-content-title")) {
-                    name = doc.getElementById("aiv-content-title").text();
+                    File file1 = new File("E:\\datawarehouse\\HTMLs\\" + id + ".html");
+                    if (file1.exists())
+                        file1.delete();
+                    if (!file1.exists()) {
+                        file1.createNewFile();
+                    }
+                    FileWriter fileWriter = new FileWriter(file1, true);
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                    bufferedWriter.write(String.valueOf(doc));
+                    bufferedWriter.close();
+                    /*name = doc.getElementById("aiv-content-title").text();
                     insertStatement.setString(1, name);
-                    insertStatement.execute();
+                    insertStatement.execute();*/
                     updateStatement.setString(1, id);
                     updateStatement.execute();
                 }
                 else if (String.valueOf(doc).contains("productTitle")) {
-                    name = doc.getElementById("productTitle").text();
+                    File file2 = new File("E:\\datawarehouse\\HTMLs\\" + id + ".html");
+                    if (file2.exists())
+                        file2.delete();
+                    if (!file2.exists()) {
+                        file2.createNewFile();
+                    }
+                    FileWriter fileWriter = new FileWriter(file2, true);
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                    bufferedWriter.write(String.valueOf(doc));
+                    bufferedWriter.close();
+                    /*name = doc.getElementById("productTitle").text();
                     insertStatement.setString(1, name);
-                    insertStatement.execute();
+                    insertStatement.execute();*/
                     updateStatement.setString(1, id);
                     updateStatement.execute();
                 }
@@ -139,7 +161,7 @@ public class Crawler implements Runnable{
                     /*if (rand == 20) {
                         System.out.println("Robot >> localhost");
                     } else {
-                        System.out.println("Robot >> host:" + Main.hosts[rand] + "port:" + Main.ports[rand]);
+                        System.out.println("Robot >> host:" + amazonmovies.Main.hosts[rand] + "port:" + amazonmovies.Main.ports[rand]);
                     }*/
                     //Thread.sleep(50000);
                     int rand2 = Math.abs(new Random().nextInt())%20;

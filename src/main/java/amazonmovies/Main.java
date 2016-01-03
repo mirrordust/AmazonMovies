@@ -1,10 +1,6 @@
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+package amazonmovies;
 
-import java.io.IOException;
 import java.sql.*;
-import java.util.LinkedList;
-import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -57,7 +53,7 @@ public class Main {
 
         try {
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://127.0.0.1:3306/amazonmovies", "root", "root");
+                    "jdbc:mysql://127.0.0.1:3306/amazon_movies", "root", "root");
             if (!conn.isClosed())
                 System.out.println("Success to connect to MySQL");
             else
@@ -70,6 +66,9 @@ public class Main {
             while (resultSet.next()) {
                 productIds.add(resultSet.getString(1));
             }
+
+            System.out.println("productIds.size:" + productIds.size());
+
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
@@ -89,14 +88,10 @@ public class Main {
             }
         }
 
-        /*productIds.add("0001489305");
-        productIds.add("0001501348");
-        productIds.add("0001516035");
-        productIds.add("B00828FWSM");
-        productIds.add("B00006HAXW");*/
+
 
         Crawler.create(productIds, insertStatement, updateStatement)
-                .thread(30)
+                .thread(200)
                 .start();
 
     }
