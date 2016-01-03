@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class TransformToTableAll {
+public class TransformToTable {
 
     public static void main(String[] args) throws IOException {
 
